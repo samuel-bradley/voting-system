@@ -1,36 +1,23 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+### How to run
 
-## Getting Started
+#### With Docker
 
-First, run the development server:
+1. Ensure Docker Desktop or Docker Engine is installed and running
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+2. Open a terminal in the project root
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. Verify Node.js and npm are installed with `node --version` and `npm --version` and install them if not
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+4. Install dependencies with `npm install` and wait for it to complete
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+5. Build and start the containers with `docker compose up --build` and wait for the database container to finish starting - there should be a log message like "server started"
 
-## Learn More
+6. Run the migrations with `npx node-pg-migrate --config-file pg-migrate-config.json up` - this should yield log output terminating in
 
-To learn more about Next.js, take a look at the following resources:
+    > Migrations complete!
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Once the website container is running, the site should be visible at http://localhost:3000 (it will take a moment to compile on the first request).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+#### Without Docker
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+It is possible to run the project without Docker by repeating the above steps, but running a local Postgres instance configured with the same username, password and database name as in `docker-compose.yml` and running `npm run dev` instead of `docker compose`.

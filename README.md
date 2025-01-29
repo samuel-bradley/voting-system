@@ -14,7 +14,7 @@
 
 6. Build and start the containers with `docker compose up --build` and wait for the database container to finish starting - there should be a log message like "server started"
 
-7. Run the migrations with `npx node-pg-migrate --config-file pg-migrate-config.json up` - this should yield log output terminating in
+7. Run the migrations with `npm run migrate:up` - this should yield log output terminating in
 
     > Migrations complete!
 

@@ -6,7 +6,9 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "migrate:up": "node-pg-migrate --config-file pg-migrate-config.json up",
+    "migrate:down": "node-pg-migrate --config-file pg-migrate-config.json down"
   },
   "dependencies": {
     "next": "15.1.6",

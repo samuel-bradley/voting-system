@@ -6,6 +6,7 @@ import { Poll } from "@/app/models/poll";
 
 export default function Page() {
   const [poll, setPoll] = useState<Poll | null>(null);
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [voted, setVoted] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -30,14 +31,13 @@ export default function Page() {
     fetchPoll();
   }, []);
 
-  // Handle voting
-  async function handleVote(optionId: string) {
-    if (!poll) return;
+  async function handleSubmitVote() {
+    if (!poll || !selectedOption) return;
 
     try {
       await axios.post("/api/vote", {
         pollId: poll.id,
-        optionId: optionId,
+        optionId: selectedOption,
       });
 
       await fetchPoll();
@@ -70,16 +70,33 @@ export default function Page() {
             </h2>
 
             {!voted ? (
-              <div className="space-y-4">
-                {poll.options.map((option) => (
-                  <button
-                    key={option.id}
-                    onClick={() => handleVote(option.id)}
-                    className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-lg transition-all"
-                  >
-                    {option.optionText}
-                  </button>
-                ))}
+              <div>
+                <div className="space-y-4">
+                  {poll.options.map((option) => (
+                    <button
+                      key={option.id}
+                      onClick={() => setSelectedOption(option.id)}
+                      className={`w-full py-3 rounded-lg transition-all text-white font-semibold ${
+                        selectedOption === option.id
+                          ? "bg-purple-600 ring-2 ring-white"
+                          : "bg-purple-500 hover:bg-purple-600"
+                      }`}
+                    >
+                      {option.optionText}
+                    </button>
+                  ))}
+                </div>
+                <button
+                  onClick={handleSubmitVote}
+                  disabled={!selectedOption}
+                  className={`w-full mt-6 py-3 text-lg font-bold rounded-lg transition-all ${
+                    selectedOption
+                      ? "bg-white text-purple-800 hover:bg-gray-200"
+                      : "bg-gray-400 text-gray-700 cursor-not-allowed"
+                  }`}
+                >
+                  Submit
+                </button>
               </div>
             ) : (
               <div className="space-y-4">

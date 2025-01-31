@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 /**
  * @swagger
- * /poll:
+ * /poll/create:
  *   post:
  *     summary: Create a new poll
  *     description: Creates a new poll with a title and options. The poll starts as active, and options have zero votes.

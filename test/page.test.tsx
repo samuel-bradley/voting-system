@@ -42,4 +42,40 @@ describe("Page Component", () => {
       optionId: "1",
     });
   });
+
+  it("displays correct percentages after voting", async () => {
+    const mockPollBeforeVote = {
+      id: "1",
+      title: "Who will win the Premier League?",
+      options: [
+        { id: "1", optionText: "Manchester City", voteCount: 2 },
+        { id: "2", optionText: "Arsenal", voteCount: 1 },
+        { id: "3", optionText: "Liverpool", voteCount: 2 },
+      ],
+    };
+    const mockPollAfterVote = {
+      ...mockPollBeforeVote,
+      options: [
+        { id: "1", optionText: "Manchester City", voteCount: 3 },
+        { id: "2", optionText: "Arsenal", voteCount: 1 },
+        { id: "3", optionText: "Liverpool", voteCount: 2 },
+      ],
+    };
+    mockedAxios.get.mockResolvedValueOnce({ data: mockPollBeforeVote });
+    mockedAxios.post.mockResolvedValueOnce({});
+    mockedAxios.get.mockResolvedValueOnce({ data: mockPollAfterVote });
+
+    await act(async () => render(<Page />));
+
+    // Vote for an option
+    const optionButton = screen.getByText("Manchester City");
+    fireEvent.click(optionButton);
+    const submitButton = screen.getByText("Submit");
+    fireEvent.click(submitButton);
+
+    // Assert percentages are displayed correctly
+    expect(await screen.findByText("Manchester City - 50.0%")).toBeInTheDocument();
+    expect(screen.getByText("Arsenal - 16.7%")).toBeInTheDocument();
+    expect(screen.getByText("Liverpool - 33.3%")).toBeInTheDocument();
+  });
 });

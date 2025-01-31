@@ -1,11 +1,9 @@
+import { query } from "@/lib/db";
 import { NextResponse } from "next/server";
-import { Pool } from "pg";
-
-const pool = new Pool();
 
 /**
  * @swagger
- * /api/poll/{pollId}/votes:
+ * /poll/{pollId}/votes:
  *   get:
  *     summary: Get votes for a poll
  *     description: Returns all votes for the given poll ID in ascending order.
@@ -40,7 +38,7 @@ export async function GET(_: Request, { params }: { params: { pollId: string } }
   const { pollId } = params;
 
   try {
-    const result = await pool.query(
+    const result = await query(
       "SELECT poll_id, option_id, created_at FROM votes WHERE poll_id = $1 ORDER BY created_at ASC",
       [pollId]
     );

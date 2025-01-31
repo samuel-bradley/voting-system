@@ -34,3 +34,7 @@ At http://localhost:3000 you will see the latest active poll with voting options
 
 The app exposes a Swagger interface for interacting with the API (which is fairly minimal, according to the parameters of the exercise) at http://localhost:3000/swagger. There it is possible to create a poll with the
 `/poll/create` endpoint and view the votes and corresponding timestamps for a poll's options with `/poll/{pollId}/votes`. The remainder of the endpoints (voting on and retrieving a poll) are used by the frontend component.
+
+### Running the tests
+
+It is possible to run the tests with `npm test`. Note that only the frontend component is currently tested. Testing the current API code would require mocking of the database - potentially the best course for improvement here is to split API logic out into a separate service and test that.
